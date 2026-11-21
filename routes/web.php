@@ -50,4 +50,11 @@ Route::middleware('auth')->group(function () {
 
     // SPRINT-4-END
 
+    // SPRINT-5-START
+    // Coordinador
+    Route::middleware(EnsureRole::class.':coordinator')->prefix('indicators')->name('indicators.')->group(function () {
+        Route::get('/', [IndicatorController::class, 'index'])->name('index');
+        Route::get('export', [IndicatorController::class, 'export'])->name('export');
+    });
+    // SPRINT-5-END
 });
