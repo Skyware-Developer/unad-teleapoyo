@@ -32,5 +32,22 @@ Route::middleware('auth')->group(function () {
         Route::get('audit', [AuditController::class, 'index'])->name('audit');
     });
 
+    // SPRINT-4-START
+    // Médico general
+    Route::middleware(EnsureRole::class.':general')->group(function () {
+        Route::get('consultations', [ConsultationController::class, 'index'])->name('consultations.index');
+        Route::get('consultations/create', [ConsultationController::class, 'create'])->name('consultations.create');
+        Route::post('consultations', [ConsultationController::class, 'store'])->name('consultations.store');
+        Route::get('consultations/{consultation}', [ConsultationController::class, 'show'])->name('consultations.show');
+    });
+
+    // Médico especialista
+    Route::middleware(EnsureRole::class.':specialist')->prefix('inbox')->name('inbox.')->group(function () {
+        Route::get('/', [InboxController::class, 'index'])->name('index');
+        Route::get('{consultation}', [InboxController::class, 'show'])->name('show');
+        Route::post('{consultation}/respond', [InboxController::class, 'respond'])->name('respond');
+    });
+
+    // SPRINT-4-END
 
 });
